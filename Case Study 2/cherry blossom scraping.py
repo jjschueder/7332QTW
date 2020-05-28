@@ -212,4 +212,4 @@ dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
 dfbig = dfbig.dropna(subset=['combtime'])
 
 dfbig.describe()
-dfbig.to_csv("/home/jjschued/Documents/womensrace.csv")
+dfbig.to_csv("C:/Users/shayden/Dropbox/SMU/Quantifying the world/7333QTW/Case Study 2/womensrace.csv")
