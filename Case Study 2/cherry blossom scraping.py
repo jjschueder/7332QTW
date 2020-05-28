@@ -27,6 +27,7 @@ womenURLs = ["1999/cb99f.html",
             "2000/Cb003f.htm",
 "2001/oof_f.html",
 "2002/ooff.htm",
+
 "2003/CB03-F.HTM",
 "2004/women.htm",
 "2005/womennet.htm",
@@ -38,7 +39,7 @@ womenURLs = ["1999/cb99f.html",
 "2011/2011cucb10m-f.htm",
 "2012/2012cucb10m-f.htm"]
 
-link = cururl
+
 def get_sp1(link):
         user_agent ='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
         headers = {'User-Agent': user_agent, }
@@ -48,9 +49,10 @@ def get_sp1(link):
         sp = soup(a,'html.parser')
         return sp
 
-
+cururl = 'http://www.cherryblossom.org/results/1999/cb99f.html'
 i = 0
 for i, val in enumerate(womenURLs):
+    df = []
     print(womenURLs[i])
     cururl = (ubase + womenURLs[i])    
     result = get_sp1(cururl)   
@@ -60,7 +62,8 @@ for i, val in enumerate(womenURLs):
     lines = table.splitlines()
     df = pd.DataFrame(lines)
     df['year'] = womenURLs[i][0:4]
-       
+
+    
     if  womenURLs[i] =='1999/cb99f.html':   
  #       rownumber = df.index[df[0].str[:2] == '=='].tolist()
  #       print(rownumber)
@@ -212,4 +215,4 @@ dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
 dfbig = dfbig.dropna(subset=['combtime'])
 
 dfbig.describe()
-dfbig.to_csv("C:/Users/shayden/Dropbox/SMU/Quantifying the world/7333QTW/Case Study 2/womensrace.csv")
+dfbig.to_csv("C:/Users/jjschued/Documents/SMU/7333 QTW/womensrace.csv")
