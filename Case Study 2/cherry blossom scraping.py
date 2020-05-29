@@ -40,25 +40,37 @@ womenURLs = ["1999/cb99f.html",
 "2012/2012cucb10m-f.htm"]
 
 
-def get_sp1(link):
+def get_sp1(link, year):
         user_agent ='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
         headers = {'User-Agent': user_agent, }
         request = urllib.request.Request(link, None, headers)  # The assembled request
         response = urllib.request.urlopen(request)
         a = response.read().decode('utf-8','ignore')
-        sp = soup(a,'html.parser')
-        return sp
+        if link != 'http://www.cherryblossom.org/results/2000/Cb003f.htm':
+            sp = soup(a,'html.parser')
+            return sp
+        elif link == 'http://www.cherryblossom.org/results/2000/Cb003f.htm':
+            index=a.find("PLACE")
+            ab = a[index:]
+            index=ab.find("# Under")
+            ab = ab[:index]
+            return ab
 
-cururl = 'http://www.cherryblossom.org/results/1999/cb99f.html'
+
+              
+#cururl = 'http://www.cherryblossom.org/results/2000/Cb003f.htm' 
+#link = cururl
+#link = 'http://www.cherryblossom.org/results/1999/cb99f.html' 
 i = 0
 for i, val in enumerate(womenURLs):
     df = []
     print(womenURLs[i])
     cururl = (ubase + womenURLs[i])    
-    result = get_sp1(cururl)   
-#    result = get_sp1('http://www.cherryblossom.org/results/2000/Cb003f.htm')
-    
-    table = result.find("pre").find(text=True)
+    result = get_sp1(cururl, womenURLs[i])   
+    if womenURLs[i] != '2000/Cb003f.htm':
+        table = result.find("pre").find(text=True)
+    elif womenURLs[i] == '2000/Cb003f.htm':
+        table = result
     lines = table.splitlines()
     df = pd.DataFrame(lines)
     df['year'] = womenURLs[i][0:4]
@@ -85,7 +97,7 @@ for i, val in enumerate(womenURLs):
         df['age'] = df[0].str[44:46]
         df['hometown'] = df[0].str[47:65]
         df['guntime'] = df[0].str[66:73]
-        df['netTime'] = df[0].str[76:82]   
+        df['netTime'] = df[0].str[75:82]   
     if  womenURLs[i] =="2001/oof_f.html":
         df['place'] = df[0].str[1:5]
         df['numId'] = df[0].str[6:11]
@@ -209,7 +221,8 @@ dfbig['pace'] = dfbig.pace.str.strip()
 dfbig['age'] = dfbig.age.str.strip()
 dfbig['time'] = dfbig.time.str.strip()
 dfbig = dfbig[dfbig.place.apply(lambda x: x.isnumeric())]     
-dfbig ['combtime'] = dfbig['time'].fillna(dfbig['guntime'])
+dfbig ['combtime'] = dfbig['time'].fillna(dfbig['netTime'])
+dfbig ['combtime'] = dfbig['combtime'].fillna(dfbig['guntime'])
 import numpy as np
 dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
 dfbig = dfbig.dropna(subset=['combtime'])
