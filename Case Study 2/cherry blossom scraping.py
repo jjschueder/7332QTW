@@ -215,6 +215,9 @@ for i, val in enumerate(womenURLs):
         df['pace'] = df[0].str[88:94]
     if  womenURLs[i] !='1999/cb99f.html':
         dfbig = dfbig.append(df)
+import numpy as np   
+dfbig['index'] = np.arange(len(dfbig))
+dfbig = dfbig.set_index('index')    
     
 dfbig['place'] = dfbig.place.str.strip()    
 dfbig['guntime'] = dfbig.guntime.str.strip()
@@ -229,7 +232,28 @@ import numpy as np
 dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
 dfbig['combtime'] = dfbig ['combtime'].str.replace('#', '')
 dfbig['combtime'] = dfbig ['combtime'].str.replace('*', '')
+dfbig = dfbig.replace(r'^\s+$', np.nan, regex=True)
+
 dfbig = dfbig.dropna(subset=['combtime'])
+
+#dfbig['time_length'] = dfbig['combtime'].apply(len)
+dfbig['time_length'] =  dfbig['combtime'].str.len()
+dfbig.loc[dfbig.time_length == 5, 'fcobmine'] = "00:" + dfbig['combtime']
+dfbig.loc[dfbig.time_length == 7, 'fcobmine'] =  dfbig['combtime']
+dfbig['finaltime'] = pd.to_datetime(dfbig['fcobmine'], format='%H:%M:%S')
+dfbig['hour'] = dfbig['finaltime'].dt.strftime("%H")
+dfbig['minutes'] = dfbig['finaltime'].dt.strftime("%M")
+dfbig['seconds'] = dfbig['finaltime'].dt.strftime("%S")
+dfbig['hour'] = dfbig ['hour'].replace('NaT', np.nan)
+dfbig['minutes'] = dfbig ['minutes'].replace('NaT', np.nan)
+dfbig['seconds'] = dfbig ['seconds'].replace('NaT', np.nan)
+dfbig = dfbig.dropna(subset=['hour', 'minutes','seconds'])
+
+
+dfbig['dursecs'] = pd.to_numeric(dfbig['hour']) * 3600 + pd.to_numeric(dfbig['minutes']) * 60 + pd.to_numeric(dfbig['seconds'])
+
+dfbig['durationminutes'] = dfbig['dursecs'] / 60
+dfbig['calcpace'] = dfbig['durationminutes'] / 10
 
 dfbig.describe()
 dfbig.to_csv("C:/Users/jjschued/Documents/SMU/7333 QTW/womensrace.csv")
