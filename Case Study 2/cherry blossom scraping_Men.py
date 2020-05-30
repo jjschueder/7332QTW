@@ -27,7 +27,6 @@ menURLs = ["1999/cb99m.html",
             "2000/Cb003m.htm",
 "2001/oof_m.html",
 "2002/oofm.htm",
-
 "2003/CB03-M.HTM",
 "2004/men.htm",
 "2005/mennet.htm",
@@ -72,10 +71,11 @@ def get_sp1(link, year):
 # print(df)
 #               
 # =============================================================================
-cururl = 'http://www.cherryblossom.org/results/2003/CB03-M.HTM' 
+#cururl = 'http://www.cherryblossom.org/results/2003/CB03-M.HTM' 
 #link = cururl
 #link = 'http://www.cherryblossom.org/results/1999/cb99f.html' 
 i = 0
+dfbig = []
 for i, val in enumerate(menURLs):
     df = []
     print(menURLs[i])
@@ -225,10 +225,9 @@ for i, val in enumerate(menURLs):
         df['guntime'] = df[0].str[80:87]
         # netTime'] = df[0].str[89:95]
         df['pace'] = df[0].str[87:94]
-    if  menURLs[i] !='1999/cb99f.html':
+    if  menURLs[i] !='1999/cb99m.html':
         dfbig = dfbig.append(df)
-    dfbig = dfbig.append(df)
-    
+
     
 dfbig['place'] = dfbig.place.str.strip()    
 dfbig['guntime'] = dfbig.guntime.str.strip()
