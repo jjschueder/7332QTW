@@ -225,7 +225,8 @@ for i, val in enumerate(menURLs):
         df['guntime'] = df[0].str[80:87]
         # netTime'] = df[0].str[89:95]
         df['pace'] = df[0].str[87:94]
-
+    if  menURLs[i] !='1999/cb99f.html':
+        dfbig = dfbig.append(df)
     dfbig = dfbig.append(df)
     
     
