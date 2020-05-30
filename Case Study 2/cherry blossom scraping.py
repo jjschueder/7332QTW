@@ -27,7 +27,6 @@ womenURLs = ["1999/cb99f.html",
             "2000/Cb003f.htm",
 "2001/oof_f.html",
 "2002/ooff.htm",
-
 "2003/CB03-F.HTM",
 "2004/women.htm",
 "2005/womennet.htm",
@@ -60,8 +59,11 @@ def get_sp1(link, year):
               
 #cururl = 'http://www.cherryblossom.org/results/2000/Cb003f.htm' 
 #link = cururl
+            
 #link = 'http://www.cherryblossom.org/results/1999/cb99f.html' 
+#cururl = link
 i = 0
+dfbig = []
 for i, val in enumerate(womenURLs):
     df = []
     print(womenURLs[i])
@@ -138,7 +140,7 @@ for i, val in enumerate(womenURLs):
         df['numId'] = df[0].str[16:22]
         df['name'] = df[0].str[22:45]
         df['age'] = df[0].str[44:48]
-        df['hometown'] = df[0].str[49:67]
+        df['hometown'] = df[0].str[48:67]
         df['guntime'] = df[0].str[67:75]
         df['netTime'] = df[0].str[75:83]        
     if  womenURLs[i] =="2006/womennet.htm":
@@ -147,7 +149,7 @@ for i, val in enumerate(womenURLs):
         df['numId'] = df[0].str[16:22]
         df['name'] = df[0].str[22:45]
         df['age'] = df[0].str[45:48]
-        df['hometown'] = df[0].str[49:64]
+        df['hometown'] = df[0].str[48:65]
         df['guntime'] = df[0].str[64:72]
         df['netTime'] = df[0].str[72:80]
         df['pace'] = df[0].str[80:87]       
@@ -200,7 +202,7 @@ for i, val in enumerate(womenURLs):
         df['hometown'] = df[0].str[51:72]
         df['guntime'] = df[0].str[80:87]
         df['netTime'] = df[0].str[88:95]
-        df['pace'] = df[0].str[97:102]
+        df['pace'] = df[0].str[96:102]
     if  womenURLs[i] =="2012/2012cucb10m-f.htm":
         df['place'] = df[0].str[1:5]
         df['div_total'] = df[0].str[6:17]
@@ -210,9 +212,9 @@ for i, val in enumerate(womenURLs):
         df['hometown'] = df[0].str[51:72]
         df['guntime'] = df[0].str[80:87]
         # netTime'] = df[0].str[89:95]
-        df['pace'] = df[0].str[89:94]
-
-    dfbig = dfbig.append(df)
+        df['pace'] = df[0].str[88:94]
+    if  womenURLs[i] !='1999/cb99f.html':
+        dfbig = dfbig.append(df)
     
 dfbig['place'] = dfbig.place.str.strip()    
 dfbig['guntime'] = dfbig.guntime.str.strip()
@@ -225,6 +227,8 @@ dfbig ['combtime'] = dfbig['time'].fillna(dfbig['netTime'])
 dfbig ['combtime'] = dfbig['combtime'].fillna(dfbig['guntime'])
 import numpy as np
 dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
+dfbig['combtime'] = dfbig ['combtime'].str.replace('#', '')
+dfbig['combtime'] = dfbig ['combtime'].str.replace('*', '')
 dfbig = dfbig.dropna(subset=['combtime'])
 
 dfbig.describe()
