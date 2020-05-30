@@ -72,7 +72,7 @@ def get_sp1(link, year):
 # print(df)
 #               
 # =============================================================================
-#cururl = 'http://www.cherryblossom.org/results/2000/Cb003f.htm' 
+cururl = 'http://www.cherryblossom.org/results/2003/CB03-M.HTM' 
 #link = cururl
 #link = 'http://www.cherryblossom.org/results/1999/cb99f.html' 
 i = 0
@@ -128,7 +128,7 @@ for i, val in enumerate(menURLs):
         df['hometown'] = df[0].str[37:55]
         df['guntime'] = df[0].str[64:72]
         df['netTime'] = df[0].str[56:63]
-    if  menURLs[i] =="2003/CB03-m.HTM":
+    if  menURLs[i] =="2003/CB03-M.HTM":
         df['place'] = df[0].str[1:5]
         df['div_total'] = df[0].str[6:15]
         df['numId'] = df[0].str[16:21]
@@ -152,7 +152,7 @@ for i, val in enumerate(menURLs):
         df['numId'] = df[0].str[16:22]
         df['name'] = df[0].str[22:45]
         df['age'] = df[0].str[44:48]
-        df['hometown'] = df[0].str[49:67]
+        df['hometown'] = df[0].str[48:67]
         df['guntime'] = df[0].str[67:75]
         df['netTime'] = df[0].str[75:83]        
     if  menURLs[i] =="2006/mennet.htm":
@@ -161,7 +161,7 @@ for i, val in enumerate(menURLs):
         df['numId'] = df[0].str[16:22]
         df['name'] = df[0].str[22:45]
         df['age'] = df[0].str[45:48]
-        df['hometown'] = df[0].str[49:64]
+        df['hometown'] = df[0].str[48:64]
         df['guntime'] = df[0].str[64:72]
         df['netTime'] = df[0].str[72:80]
         df['pace'] = df[0].str[80:87]       
@@ -184,7 +184,7 @@ for i, val in enumerate(menURLs):
         df['hometown'] = df[0].str[51:70]
         df['guntime'] = df[0].str[98:106]
         #netTime'] = df[0].str[73:80]
-        df['pace'] = df[0].str[107:112] 
+        df['pace'] = df[0].str[106:112] 
     if  menURLs[i] =="2009/09cucb-M.htm":
         df['place'] = df[0].str[1:5]
         df['div_total'] = df[0].str[6:17]
@@ -214,7 +214,7 @@ for i, val in enumerate(menURLs):
         df['hometown'] = df[0].str[51:72]
         df['guntime'] = df[0].str[80:87]
         df['netTime'] = df[0].str[88:95]
-        df['pace'] = df[0].str[97:102]
+        df['pace'] = df[0].str[96:102]
     if  menURLs[i] =="2012/2012cucb10m-m.htm":
         df['place'] = df[0].str[1:5]
         df['div_total'] = df[0].str[6:17]
@@ -224,12 +224,10 @@ for i, val in enumerate(menURLs):
         df['hometown'] = df[0].str[51:72]
         df['guntime'] = df[0].str[80:87]
         # netTime'] = df[0].str[89:95]
-        df['pace'] = df[0].str[89:94]
+        df['pace'] = df[0].str[87:94]
 
     dfbig = dfbig.append(df)
     
-    
-dfbig.place   
     
 dfbig['place'] = dfbig.place.str.strip()    
 dfbig['guntime'] = dfbig.guntime.str.strip()
@@ -242,7 +240,10 @@ dfbig ['combtime'] = dfbig['time'].fillna(dfbig['netTime'])
 dfbig ['combtime'] = dfbig['combtime'].fillna(dfbig['guntime'])
 import numpy as np
 dfbig['combtime'] = dfbig ['combtime'].replace('', np.nan)
+dfbig['combtime'] = dfbig ['combtime'].str.replace('#', '')
+dfbig['combtime'] = dfbig ['combtime'].str.replace('*', '')
 dfbig = dfbig.dropna(subset=['combtime'])
 
+
 dfbig.describe()
-dfbig.to_csv("C:/Users/shayden/Dropbox/SMU/Quantifying the world/7333QTW/Case Study 2/mensrace.csv")
+dfbig.to_csv("C:/Users/jjschued/Documents/SMU/7333 QTW/mensrace.csv")
